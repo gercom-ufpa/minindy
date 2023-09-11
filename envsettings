@@ -1,7 +1,6 @@
 #!/bin/bash
-declare XX_NETWORK_NAME='sandbox'
-declare XX_IMAGETAG='2.3.0'
+declare XX_IMAGETAG='latest'
 declare XX_EXPOSE_ENDPOINTS='false'
-declare XX_CURRENT_STWD=org0.exemplo.com
-declare XX_RUN_OUTPUT=minindy
+declare XX_CURRENT_ORG=org0.example.com
+declare XX_RUN_OUTPUT=minifab
 declare XX_TARGET_ENV=DOCKER

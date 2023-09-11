@@ -25,7 +25,7 @@ COPY --from=build /tmp/minindy /home
 COPY --from=build /tmp/plugins /usr/lib/python3.8/site-packages/ansible/plugins
 COPY --from=build /tmp/pypatch /usr/lib/python3.8/site-packages/Crypto/Random/Fortuna
 RUN rm -rf /var/cache/apk/* && rm -rf /tmp/* && apk update && \
-    pip install requests google-auth kubernetes ansible && \
+    pip install requests google-auth kubernetes ansible docker && \
     ansible-galaxy collection install cloud.common kubernetes.core && \
     apk del dos2unix && rm -rf /var/cache/apk/* && rm -rf /tmp/*
 

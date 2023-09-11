@@ -13,7 +13,7 @@ COPY . /home
 COPY plugins /usr/lib/python3.8/site-packages/ansible/plugins
 COPY pypatch /usr/lib/python3.8/site-packages/Crypto/Random/Fortuna
 RUN rm -rf /var/cache/apk/* && rm -rf /tmp/* && apk update && \
-    pip install requests google-auth kubernetes ansible && \
+    pip install requests google-auth kubernetes ansible docker && \
     ansible-galaxy collection install cloud.common kubernetes.core && \
     dos2unix -q /home/main.sh /home/scripts/mainfuncs.sh \
     /usr/lib/python3.8/site-packages/ansible/plugins/callback/minifab.py && \

@@ -2,7 +2,7 @@
 
 export PATH=${PWD}/../bin:${PWD}:$PATH
 export INDY_CFG_PATH=${PWD}
-export VERBOSE=false
+export VERBOSE=true
 export DOCKER_API_VERSION=1.39
 
 . scripts/mainfuncs.sh
@@ -17,7 +17,9 @@ case $optkey in
   -h|--help)
     printHelp; exit 0;;
   -s|--steward)
-    CURRENT_STWD="$2";shift;shift;;
+    CURRENT_ORG="$2";shift;shift;;
+  -f|--run-output)
+    RUN_OUTPUT="$2";shift;shift;;
   -a|--target-environment)
     TARGET_ENV="$2";shift;shift;;
   *) # unknown option
@@ -30,11 +32,14 @@ isValidateCMD
 doDefaults
 
 echo "MinIndy Execution Context:"
+echo "    INDY_RELEASE=$IMAGETAG"
 echo "    EXPOSE_ENDPOINTS=$EXPOSE_ENDPOINTS"
-echo "    CURRENT_STWD=$CURRENT_STWD"
+echo "    CURRENT_STWD=$CURRENT_ORG"
 echo "    HOST_ADDRESSES=$ADDRS"
 echo "    TARGET_ENV=$TARGET_ENV"
 
 getRealRootDir
+
+echo "    WORKING_DIRECTORY: $hostroot"
 
 startMinIndy

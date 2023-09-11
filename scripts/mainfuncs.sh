@@ -6,12 +6,13 @@
 #
 
 # This script defines the main capabilities of this project
-r
+
+
 declare -A OPNAMES
 LINE0='imageget,netup'
 OPNAMES=([up]="$LINE0" [init]='imageget,init' [start]='start' \
   [restart]='stop,start' \
-  [clean]='stop,filerem' \
+  [clean]='netdown,filerem' \
   [stop]='stop' )
 
 # Print the usage message
@@ -30,12 +31,13 @@ function printHelp() {
   echo "    options:"
   echo "    -a|--target-environment   - set desired network environment, options are: DOCKER, K8SCLASSIC, K8SOPERATOR"
   echo "    -o|--steward              - steward to be used for org specific operations"
+  echo "    -f|--run-output           - minindy run time output callback, can be 'minifab'(default), 'default', 'dense'"
   echo "    -h|--help                 - print this message"
   echo
 }
 
 function doDefaults() {
-  declare -a params=("CURRENT_STWD" "TARGET_ENV")
+  declare -a params=("IMAGETAG" "EXPOSE_ENDPOINTS" "CURRENT_ORG" "RUN_OUTPUT" "TARGET_ENV")
   if [ ! -f "./vars/envsettings" ]; then
     cp envsettings vars/envsettings
   fi
@@ -52,10 +54,16 @@ function doDefaults() {
   done
 }
 
+
 function doOp() {
-  ansible-playbook -i hosts -e "mode=$1" -e "hostroot=$hostroot" -e "ADDRS=$ADDRS" \
-  -e "CURRENT_ORG=$CURRENT_ORG" -e "TARGET_ENVIRONMENT=$TARGET_ENV" ops.yaml
+  ansible-playbook -vvv -i hosts \
+  -e "mode=$1" -e "hostroot=$hostroot" \
+  -e "IMAGETAG=$IMAGETAG" \
+  -e "EXPOSE_ENDPOINTS=$EXPOSE_ENDPOINTS" \
+  -e "ADDRS=$ADDRS" -e "CURRENT_ORG=$CURRENT_ORG" \
+  -e "TARGET_ENVIRONMENT=$TARGET_ENV" indyops.yaml
 }
+
 
 funcparams='optionverify'
 
