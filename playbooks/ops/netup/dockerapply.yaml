@@ -23,20 +23,79 @@
     dest: "{{ pjroot }}/vars/run/{{ item.fullname }}.env"
   with_items: "{{ allvalidators }}"
 
+- name: Set couping path
+  set_fact:
+    mpath: "{{ pjroot }}/vars/keyfiles/validatorOrganizations"
+
+# - name: Create temporary container to copy files
+#   docker_container:
+#     name: temp_container
+#     image: alanveloso/indy-validator:{{ indy.release }}
+#     state: started
+#   register: temp_container
+
+- name: Create temporary containers to copy files
+  command: >-
+    docker run -d --network {{ NETNAME }} --name "temp_container_{{ validator.fullname }}"
+    --env-file {{ pjroot }}/vars/run/{{ validator.fullname }}.env {{ validator.portmap }}
+    {{ container_options }}
+    alanveloso/indy-validator:{{ indy.release }} 
+  loop: "{{ allvalidators }}"
+  loop_control:
+    loop_var: validator
+  register: temp_containers
+
+- name: Ensure host directories exist for each validator
+  include_tasks: create_directories.yaml
+  with_items: "{{ allvalidators }}"
+
+- name: Copy /etc/indy for each validator
+  command:
+    cmd: "docker cp temp_container_{{ validator.fullname }}:/etc/indy/. {{ mpath }}/{{validator.org}}/validators/{{validator.fullname}}/etc_indy"
+  loop: "{{ allvalidators }}"
+  loop_control:
+    loop_var: validator
+
+- name: Copy /var/lib/indy for each validator
+  command:
+    cmd: "docker cp temp_container_{{ validator.fullname }}:/var/lib/indy/. {{ mpath }}/{{validator.org}}/validators/{{validator.fullname}}/lib_indy"
+  loop: "{{ allvalidators }}"
+  loop_control:
+    loop_var: validator
+
+- name: Copy /var/log/indy for each validator
+  command:
+    cmd: "docker cp temp_container_{{ validator.fullname }}:/var/log/indy/. {{ mpath }}/{{validator.org}}/validators/{{validator.fullname}}/log_indy"
+  loop: "{{ allvalidators }}"
+  loop_control:
+    loop_var: validator
+
+- name: Remove temporary containers
+  docker_container:
+    name: "temp_container_{{ validator.fullname }}"
+    state: absent
+  loop: "{{ allvalidators }}"
+  loop_control:
+    loop_var: validator
+
 - name: Set absolute mounting path
   set_fact:
     mpath: "{{hostroot}}/vars/keyfiles/validatorOrganizations"
 
 - name: Start all validator nodes
   command: >-
-    docker run --network {{ NETNAME }} --name {{ item.fullname }} --hostname {{ item.fullname }}
-    --env-file {{ pjroot }}/vars/run/{{ item.fullname }}.env {{ item.portmap }}
-    -v {{ mpath }}/{{item.org}}/validators/{{item.fullname}}/log_indy:/var/log/indy
+    docker run -d --network {{ NETNAME }} --name {{ validator.fullname }} --hostname {{ validator.fullname }}
+    --env-file {{ pjroot }}/vars/run/{{ validator.fullname }}.env {{ validator.portmap }}
+    -v {{ mpath }}/{{validator.org}}/validators/{{validator.fullname}}/etc_indy:/etc/indy
+    -v {{ mpath }}/{{validator.org}}/validators/{{validator.fullname}}/lib_indy:/var/lib/indy
+    -v {{ mpath }}/{{validator.org}}/validators/{{validator.fullname}}/log_indy:/var/log/indy
     {{ container_options }}
-    alanveloso/indy-validator:{{ indy.release }}
-  with_items: "{{ allvalidators }}"
+    alanveloso/indy-validator:{{ indy.release }} 
+  loop: "{{ allvalidators }}"
+  loop_control:
+    loop_var: validator
   register: validatorstat
-  ignore_errors: yes
+  ignore_errors: no
 
 - name: "Check errors"
   when: validatorstat.failed is defined and validatorstat.failed == true
