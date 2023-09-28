@@ -1,0 +1,50 @@
+---
+- name: Set couping path
+  set_fact:
+    mpath: "{{ pjroot }}/vars/keyfiles/validatorOrganizations"
+
+- name: Copy domain_transactions_genesis to validators
+  copy:
+    src: "{{ pjroot }}/vars/domain_transactions_genesis"
+    dest: "{{ mpath }}/{{validator.org}}/validators/{{validator.fullname}}/lib_indy/{{ NETNAME }}/domain_transactions_genesis"
+  loop: "{{ allvalidators }}"
+  loop_control:
+    loop_var: validator
+
+- name: Copy pool_transactions_genesis to validators
+  copy:
+    src: "{{ pjroot }}/vars/pool_transactions_genesis"
+    dest: "{{ mpath }}/{{validator.org}}/validators/{{validator.fullname}}/lib_indy/{{ NETNAME }}/pool_transactions_genesis"
+  loop: "{{ allvalidators }}"
+  loop_control:
+    loop_var: validator
+
+- name: Set absolute mounting path
+  set_fact:
+    mpath: "{{ hostroot }}/vars/keyfiles/validatorOrganizations"
+
+- name: Start all validator nodes
+  command: >-
+    docker run -d --network {{ NETNAME }} --name {{ validator.fullname }} --hostname {{ validator.fullname }}
+    --env-file {{ pjroot }}/vars/run/{{ validator.fullname }}.env {{ validator.portmap }}
+    -v {{ mpath }}/{{validator.org}}/validators/{{validator.fullname}}/etc_indy:/etc/indy
+    -v {{ mpath }}/{{validator.org}}/validators/{{validator.fullname}}/lib_indy:/var/lib/indy
+    -v {{ mpath }}/{{validator.org}}/validators/{{validator.fullname}}/log_indy:/var/log/indy
+    {{ container_options }}
+    alanveloso/indy-validator:{{ indy.release }} 
+  loop: "{{ allvalidators }}"
+  loop_control:
+    loop_var: validator
+  register: validatorstat
+  ignore_errors: no
+
+- name: "Check errors"
+  when: validatorstat.failed is defined and validatorstat.failed == true
+  block:
+  - name: Error!
+    debug:
+      msg: "{{ validatorstat.results[0].stderr }}"
+    tags: [print_action]
+
+  - name: Exit play when there is an error
+    meta: end_play

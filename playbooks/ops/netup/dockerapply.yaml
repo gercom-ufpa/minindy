@@ -68,25 +68,6 @@
   loop_control:
     loop_var: validator
 
-- name: Set absolute mounting path
-  set_fact:
-    mpath: "{{hostroot}}/vars/keyfiles/validatorOrganizations"
-
-- name: Start all validator nodes
-  command: >-
-    docker run -d --network {{ NETNAME }} --name {{ validator.fullname }} --hostname {{ validator.fullname }}
-    --env-file {{ pjroot }}/vars/run/{{ validator.fullname }}.env {{ validator.portmap }}
-    -v {{ mpath }}/{{validator.org}}/validators/{{validator.fullname}}/etc_indy:/etc/indy
-    -v {{ mpath }}/{{validator.org}}/validators/{{validator.fullname}}/lib_indy:/var/lib/indy
-    -v {{ mpath }}/{{validator.org}}/validators/{{validator.fullname}}/log_indy:/var/log/indy
-    {{ container_options }}
-    alanveloso/indy-validator:{{ indy.release }} 
-  loop: "{{ allvalidators }}"
-  loop_control:
-    loop_var: validator
-  register: validatorstat
-  ignore_errors: no
-
 - name: "Check errors"
   when: validatorstat.failed is defined and validatorstat.failed == true
   block:
