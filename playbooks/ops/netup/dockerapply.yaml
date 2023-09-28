@@ -14,9 +14,6 @@
   with_items:
     - "{{ allvalidators }}"
 
-# - name: "Process keys"
-#   include_tasks: "{{ pjroot }}/playbooks/common/processkeys.yaml"
-
 - name: Create env file for all nodes
   template:
     src: "{{ pjroot }}/playbooks/ops/netup/templates/{{ item.type }}env.j2"
@@ -26,13 +23,6 @@
 - name: Set couping path
   set_fact:
     mpath: "{{ pjroot }}/vars/keyfiles/validatorOrganizations"
-
-# - name: Create temporary container to copy files
-#   docker_container:
-#     name: temp_container
-#     image: alanveloso/indy-validator:{{ indy.release }}
-#     state: started
-#   register: temp_container
 
 - name: Create temporary containers to copy files
   command: >-
