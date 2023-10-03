@@ -52,7 +52,7 @@
         allvalidators: |
           {{ allvalidators + [{ 'org':item.split('.')[1:] | join("."),
             'url': ipaddr, 'port': nodeport, 'oport': (nodeport|int+1000)|string,
-            'portmap':'-p '+nodeport+':9701 -p '+((nodeport|int+1000)|string)+':9711',
+            'portmap':'-p '+nodeport+':9701 -p '+((nodeport|int+1000)|string)+':9702',
             'mspid': item.split('.')[1:] | join('-'),
             'name':item.split('.')[0], 'fullname': item, 'type': 'validator' }] }}
         nodeport: "{{ nodeport|int + 1 }}"

@@ -18,6 +18,8 @@ case $optkey in
     printHelp; exit 0;;
   -s|--steward)
     CURRENT_ORG="$2";shift;shift;;
+  -e|--expose-endpoints)
+    EXPOSE_ENDPOINTS="$2";shift;shift;;
   -f|--run-output)
     RUN_OUTPUT="$2";shift;shift;;
   -a|--target-environment)
@@ -33,6 +35,7 @@ doDefaults
 
 echo "MinIndy Execution Context:"
 echo "    INDY_RELEASE=$IMAGETAG"
+echo "    EXPOSE_ENDPOINTS=$EXPOSE_ENDPOINTS"
 echo "    EXPOSE_ENDPOINTS=$EXPOSE_ENDPOINTS"
 echo "    CURRENT_STWD=$CURRENT_ORG"
 echo "    HOST_ADDRESSES=$ADDRS"
