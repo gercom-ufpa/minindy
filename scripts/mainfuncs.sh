@@ -56,7 +56,7 @@ function doDefaults() {
 
 
 function doOp() {
-  ansible-playbook -vvv -i hosts \
+  ansible-playbook -i hosts \
   -e "mode=$1" -e "hostroot=$hostroot" \
   -e "IMAGETAG=$IMAGETAG" \
   -e "EXPOSE_ENDPOINTS=$EXPOSE_ENDPOINTS" \
