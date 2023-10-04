@@ -1,0 +1,11 @@
+---
+- name: "Create directories for {{ item.fullname }}"
+  file:
+    path: "{{ mpath }}/{{ item.org }}/validators/{{ item.fullname }}/{{ directory }}"
+    state: "directory"
+  with_items:
+    - "etc_indy"
+    - "lib_indy"
+    - "log_indy"
+  loop_control:
+    loop_var: directory

@@ -12,14 +12,4 @@
     tags: [print_action]
   - meta: end_play
 
-- name: "Check orderer requirements for the operation"
-  when: >-
-    'ORDERER' in PRECONDITIONS[op] and allorderers|length == 0 and
-    ext_orderers is defined and (ext_orderers|length) == 0
-  block:
-  - debug:
-      msg: "{{ OPNAMES[op] }} requires orderer node available, there is non existing in the current environment."
-    tags: [print_action]
-  - meta: end_play
-
 - include_tasks: "playbooks/ops/{{ op }}/apply.yaml"

@@ -14,6 +14,6 @@ grade servers. MinIndy has been tested on Linux.
 mkdir -p ~/mywork && cd ~/mywork && curl -o minindy -sL https://raw.githubusercontent.com/alanveloso/minindy/main/minindy && chmod +x minindy
 ```
 
-##### Make minifab available system wide
+##### Make minindy available system wide
 
-Move the minindy (Linux and OS X) script to a directory which is part of your execution PATH in your system or add the directory containing it to your PATH. This is to make the later operations a bit easier, you will be able to run the minifab command anywhere in your system without specifying the path to the minifab script.
+Move the minindy script to a directory which is part of your execution PATH in your system or add the directory containing it to your PATH. This is to make the later operations a bit easier, you will be able to run the minindy command anywhere in your system without specifying the path to the minindy script.

@@ -1,6 +1,6 @@
 ---
-- name: Start fabric operations
-  hosts: minifab
+- name: Start indy operations
+  hosts: minindy
   gather_facts: no
   connection: local
   vars:
@@ -16,28 +16,22 @@
         current_location_hash: "{{ hostroot | hash('sha256') }}"
 
     - set_fact:
-        CLINAME: "{{ (fabric.netname is defined) | ternary(fabric.netname, current_location_hash[:10]+'_cli') }}"
-        NETNAME: "{{ (fabric.netname is defined) | ternary(fabric.netname, current_location_hash[:10]+'_net') }}"
+        CLINAME: "{{ (indy.netname is defined) | ternary(indy.netname, current_location_hash[:10]+'_cli') }}"
+        NETNAME: "{{ (indy.netname is defined) | ternary(indy.netname, current_location_hash[:10]+'_net') }}"
 
     - name: Set endpoint address to first auto detected IP address 
       set_fact:
         endpoint_address: "{{ ADDRS.split(',')[0] }}"
-      when: fabric.endpoint_address is undefined
+      when: indy.endpoint_address is undefined
 
     - name: Set up the endpoint address when configured in spec.yaml
       set_fact:
-        endpoint_address: "{{ fabric.endpoint_address }}"
-      when: fabric.endpoint_address is defined
-
-    - name: Remove approve and commit from the operation list if release is less than 2.0
-      set_fact:
-        allops: "{{ allops | difference(['ccapprove', 'cccommit']) }}"
-        OPNAMES: "{{ OPNAMES | combine({'ccinstantiate': 'cc instantiate'}) }}"
-      when: IMAGETAG is version('2.0', '<')
+        endpoint_address: "{{ indy.endpoint_address }}"
+      when: indy.endpoint_address is defined
 
     - name: Setup container_options for appending docker run command
       set_fact:
-        container_options: "{{ ( fabric.container_options is defined ) | ternary(fabric.container_options, '') }}"
+        container_options: "{{ ( indy.container_options is defined ) | ternary(indy.container_options, '') }}"
 
     - meta: end_play
       when: allops|length == 0
@@ -64,7 +58,7 @@
       include_vars: "{{ pjroot }}/vars/ext_node_vars.json"
       when: exflag.stat.exists == true
 
-    - name: Do all the requested fabric operations
+    - name: Do all the requested indy operations
       include_tasks: "playbooks/ops/opwrapper.yaml"
       loop: "{{ allops }}"
       loop_control:

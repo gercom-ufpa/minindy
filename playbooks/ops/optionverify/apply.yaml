@@ -36,5 +36,5 @@
 - name: Verify the endpoint address is set for k8s deployment
   fail:
     msg: "The endpoint address has to be set, please set it in your spec.yaml file!"
-  when: TARGET_ENV == 'K8SCLASSIC' and fabric.endpoint_address is not defined
+  when: TARGET_ENV == 'K8SCLASSIC' and indy.endpoint_address is not defined
   tags: [print_action]

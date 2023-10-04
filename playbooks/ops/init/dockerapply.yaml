@@ -1,0 +1,87 @@
+---
+- name: Query Indy docker network
+  command: >-
+    docker network ls -f name={{ NETNAME }} -q
+  register: netstat
+
+- name: Create indy docker network if it does not exist
+  command: "docker network create {{ NETNAME }}"
+  when: netstat.stdout == ""
+
+- name: Create volumes for validator nodes
+  command: >-
+    docker volume create {{ item.fullname }}
+  with_items:
+    - "{{ allvalidators }}"
+
+- name: Create env file for all nodes
+  template:
+    src: "{{ pjroot }}/playbooks/ops/init/templates/{{ item.type }}env.j2"
+    dest: "{{ pjroot }}/vars/run/{{ item.fullname }}.env"
+  with_items: "{{ allvalidators }}"
+
+- name: Set couping path
+  set_fact:
+    mpath: "{{ pjroot }}/vars/keyfiles/validatorOrganizations"
+
+- name: Create temporary containers to copy files
+  command: >-
+    docker run --network {{ NETNAME }} --name "temp_container_{{ validator.fullname }}"
+    --env-file {{ pjroot }}/vars/run/{{ validator.fullname }}.env {{ validator.portmap }}
+    {{ container_options }}
+    alanveloso/indy-validator:{{ indy.release }} 
+  loop: "{{ allvalidators }}"
+  loop_control:
+    loop_var: validator
+  register: temp_containers
+  ignore_errors: yes
+
+- name: Show key from validators
+  debug:
+    msg: "{{ item.stdout }}"
+  with_items: "{{ temp_containers.results }}"
+  tags: [print_action]
+
+- name: Ensure host directories exist for each validator
+  include_tasks: create_directories.yaml
+  with_items: "{{ allvalidators }}"
+
+- name: Copy /etc/indy for each validator
+  command:
+    cmd: "docker cp temp_container_{{ validator.fullname }}:/etc/indy/. {{ mpath }}/{{validator.org}}/validators/{{validator.fullname}}/etc_indy"
+  loop: "{{ allvalidators }}"
+  loop_control:
+    loop_var: validator
+
+- name: Copy /var/lib/indy for each validator
+  command:
+    cmd: "docker cp temp_container_{{ validator.fullname }}:/var/lib/indy/. {{ mpath }}/{{validator.org}}/validators/{{validator.fullname}}/lib_indy"
+  loop: "{{ allvalidators }}"
+  loop_control:
+    loop_var: validator
+
+- name: Copy /var/log/indy for each validator
+  command:
+    cmd: "docker cp temp_container_{{ validator.fullname }}:/var/log/indy/. {{ mpath }}/{{validator.org}}/validators/{{validator.fullname}}/log_indy"
+  loop: "{{ allvalidators }}"
+  loop_control:
+    loop_var: validator
+
+- name: Remove temporary containers
+  docker_container:
+    name: "temp_container_{{ validator.fullname }}"
+    state: absent
+  loop: "{{ allvalidators }}"
+  loop_control:
+    loop_var: validator
+
+- name: "Check errors"
+  when: validatorstat.failed is defined and validatorstat.failed == true
+  block:
+  - name: Error!
+    debug:
+      msg: "{{ validatorstat.results[0].stderr }}"
+    tags: [print_action]
+
+  - name: Exit play when there is an error
+    meta: end_play

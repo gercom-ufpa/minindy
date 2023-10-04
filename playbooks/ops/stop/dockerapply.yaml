@@ -1,0 +1,24 @@
+---
+- name: set two values
+  set_fact:
+    leftbrace: "{"
+    rightbrace: "}"
+
+- name: List all the containers on the network
+  command: >-
+    docker ps -aqf network={{ NETNAME }}
+  register: containers
+
+- name: Remove the container
+  command: >-
+    docker rm -f {{ containers.stdout_lines | join(' ') }}
+  when: containers.stdout_lines | length > 0
+
+- name: Query Indy docker network
+  command: >-
+    docker network ls -f name={{ NETNAME }} -q
+  register: netstat
+
+- name: Delete indy docker network if it exists
+  command: "docker network rm {{ NETNAME }}"
+  when: netstat.stdout != ""
