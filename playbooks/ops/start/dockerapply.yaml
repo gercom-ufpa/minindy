@@ -36,7 +36,7 @@
   loop_control:
     loop_var: validator
   register: validatorstat
-  ignore_errors: no
+  ignore_errors: yes
 
 - name: "Check errors"
   when: validatorstat.failed is defined and validatorstat.failed == true

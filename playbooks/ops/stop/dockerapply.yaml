@@ -14,12 +14,6 @@
     docker rm -f {{ containers.stdout_lines | join(' ') }}
   when: containers.stdout_lines | length > 0
 
-- name: Remove env file for all nodes
-  file:
-    path: "{{ pjroot }}/vars/run/{{ item.fullname }}.env"
-    state: absent
-  with_items: "{{ allvalidators }}"
-
 - name: Query Indy docker network
   command: >-
     docker network ls -f name={{ NETNAME }} -q

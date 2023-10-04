@@ -9,10 +9,10 @@
 
 
 declare -A OPNAMES
-LINE0='imageget,netup'
+LINE0='imageget,stop'
 OPNAMES=([up]="$LINE0" [init]='imageget,init' [start]='start' \
   [restart]='stop,start' \
-  [clean]='netdown,filerem' \
+  [clean]='stop,filerem' \
   [stop]='stop' )
 
 # Print the usage message
