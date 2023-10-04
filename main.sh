@@ -36,7 +36,6 @@ doDefaults
 echo "MinIndy Execution Context:"
 echo "    INDY_RELEASE=$IMAGETAG"
 echo "    EXPOSE_ENDPOINTS=$EXPOSE_ENDPOINTS"
-echo "    EXPOSE_ENDPOINTS=$EXPOSE_ENDPOINTS"
 echo "    CURRENT_STWD=$CURRENT_ORG"
 echo "    HOST_ADDRESSES=$ADDRS"
 echo "    TARGET_ENV=$TARGET_ENV"
