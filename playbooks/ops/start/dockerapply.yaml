@@ -1,4 +1,19 @@
 ---
+- name: Query Indy docker network
+  command: >-
+    docker network ls -f name={{ NETNAME }} -q
+  register: netstat
+
+- name: Create indy docker network if it does not exist
+  command: "docker network create {{ NETNAME }}"
+  when: netstat.stdout == ""
+
+- name: Create volumes for validator nodes
+  command: >-
+    docker volume create {{ item.fullname }}
+  with_items:
+    - "{{ allvalidators }}"
+
 - name: Set couping path
   set_fact:
     mpath: "{{ pjroot }}/vars/keyfiles/validatorOrganizations"
