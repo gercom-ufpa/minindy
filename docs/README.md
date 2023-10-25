@@ -10,19 +10,19 @@ The table of the content
 ========================
 1. [Prerequisites](#prerequisites)
 2. [Working directory](#working-directory)
-3. [Stand up a Indy network](#stand-up-a-fabric-network)
-4. [Tear down the Indy network](#tear-down-the-fabric-network)
-5. [The normal process of working with Hyperledger Fabric](#the-normal-process-of-working-with-hyperledger-fabric)
+3. [Stand up a Indy network](#stand-up-a-indy-network)
+4. [Tear down the Indy network](#tear-down-the-indy-network)
+5. [The normal process of working with Hyperledger Fabric](#the-normal-process-of-working-with-hyperledger-indy)
 6. [Setup a network using a different spec](#setup-a-network-using-a-different-spec)
-12. [Add a new organization to your Indy network](#add-a-new-organization-to-your-fabric-network)
-19. [Build MinIndy locally](#build-minifabric-locally)
+12. [Add a new organization to your Indy network](#add-a-new-node-to-your-indy-network)
+19. [Build MinIndy locally](#build-minindy-locally)
 
 
 ### Prerequisites
 This tool requires **docker CE 18.03** or newer, MinIndy supports Linux
 
 ### Get the script and make it available system wide
-##### Run the following command for Linux or OS X
+##### Run the following command for Linux
 ```
 mkdir -p ~/mywork && cd ~/mywork && curl -o minindy -sL https://raw.githubusercontent.com/alanveloso/minindy/main/minindy && chmod +x minindy
 ```
@@ -97,7 +97,7 @@ Save the sheets filled out by the Trustees and Stewards as separate files in csv
 
 Copy `pool_transactions_genesis` and `domain_transactions_genesis` to `~/mywork/vars`. To stand up a Indy network, simply run the `minindy start` command in your working directory. When the command finishes, you should have a Indy network running on your machine.
 
-### Tear down the Fabric network
+### Tear down the Indy network
 
 You can use one of the two commands below to shut down the Fabric network.
 ```
@@ -106,13 +106,13 @@ minifab clean
 ```
 The first command simply removes all the containers which make up the Indy network, it will NOT remove any certificates or ledger data, you can run `minifab start` later to restart the whole thing including chaincode containers if there are any. The second command, in addition to removing all the containers, it cleans the working directory.
 
-### The normal process of working with Hyperledger Fabric
+### The normal process of working with Hyperledger Indy
 
 The below list is to show you the normal process of working with Indy.
 
     1. Create Trustees credentials
     2. Create Stewards credentials
-    3. Install [Validator nodes](https://github.com/hyperledger/indy-node/)
+    3. Install Validator nodes
     4. Create credentials to the Validator nodes
     5. Genarete the genesis files
     6. Stand up a Indy network
@@ -146,8 +146,11 @@ indy:
 For example, following is the result for default spec.yaml with `-e 1079`
 
 > validator.org0.example.com --> mspid = org0-example-com, organization name = org0.example.com, hostPort=1079, 2079
+
 > validator.org1.example.com --> mspid = org1-example-com, organization name = org1.example.com, hostPort=1080, 2080
+
 > validator.org2.example.com --> mspid = org2-example-com, organization name = org2.example.com, hostPort=1081, 2081
+
 > validator.org3.example.com --> mspid = org3-example-com, organization name = org3.example.com, hostPort=1082, 2082
 
 
