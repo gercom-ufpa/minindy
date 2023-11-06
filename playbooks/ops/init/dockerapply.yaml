@@ -1,19 +1,4 @@
 ---
-- name: Query Indy docker network
-  command: >-
-    docker network ls -f name={{ NETNAME }} -q
-  register: netstat
-
-- name: Create indy docker network if it does not exist
-  command: "docker network create {{ NETNAME }}"
-  when: netstat.stdout == ""
-
-- name: Create volumes for validator nodes
-  command: >-
-    docker volume create {{ item.fullname }}
-  with_items:
-    - "{{ allvalidators }}"
-
 - name: Create env file for all nodes
   template:
     src: "{{ pjroot }}/playbooks/ops/init/templates/{{ item.type }}env.j2"
@@ -26,8 +11,8 @@
 
 - name: Create temporary containers to copy files
   command: >-
-    docker run --network {{ NETNAME }} --name "temp_container_{{ validator.fullname }}"
-    --env-file {{ pjroot }}/vars/run/{{ validator.fullname }}.env {{ validator.portmap }}
+    docker run --name "temp_container_{{ validator.fullname }}"
+    --env-file {{ pjroot }}/vars/run/{{ validator.fullname }}.env
     {{ container_options }}
     alanveloso/indy-validator:{{ indy.release }} 
   loop: "{{ allvalidators }}"

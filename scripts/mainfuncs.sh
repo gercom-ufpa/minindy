@@ -30,7 +30,7 @@ function printHelp() {
   echo ""
   echo "    options:"
   echo "    -a|--target-environment   - set desired network environment, options are: DOCKER, K8SCLASSIC, K8SOPERATOR"
-  echo "    -o|--steward              - steward to be used for org specific operations"
+  echo "    -s|--steward              - steward to be used for org specific operations"
   echo "    -e|--expose-endpoints     - flag if node endpoints should be exposed, default is false"
   echo "    -f|--run-output           - minindy run time output callback, can be 'minifab'(default), 'default', 'dense'"
   echo "    -h|--help                 - print this message"
