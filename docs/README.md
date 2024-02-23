@@ -3,7 +3,7 @@ MinIndy is a tool to let you setup a Indy network and expand your network.
 
 It currently provides the following functions:
 
-1. Deploy a Indy network based on this [spec](https://github.com/hyperledger-labs/minifabric/blob/main/spec.yaml) or [your own spec](#Setup-a-network-using-a-different-spec)
+1. Deploy a Indy network based on this [spec](https://raw.githubusercontent.com/alanveloso/minindy/develop/spec.yaml) or [your own spec](#Setup-a-network-using-a-different-spec)
 2. Tear down the deployed Indy network
 
 The table of the content
@@ -27,7 +27,7 @@ This tool requires **docker CE 18.03** or newer, MinIndy supports Linux
 mkdir -p ~/mywork && cd ~/mywork && curl -o minindy -sL https://raw.githubusercontent.com/alanveloso/minindy/main/minindy && chmod +x minindy
 ```
 
-##### Make minifab available system wide
+##### Make minindy available system wide
 Move the `minindy` script you just downloaded to a directory which is part of your execution PATH in your system or add the directory containing it to your PATH. This is to make MinIndy executions a bit easier, you will be able to run the `minindy` command anywhere in your system without specify the path to the script. When the term `MinIndy` is used, it refers to the tool, when the term `minindy` is used, it refers to the MinIndy command which is the only command MinIndy has.
 
 ### Working directory
