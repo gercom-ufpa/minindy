@@ -57,7 +57,7 @@ As you proceed through these steps, you will be generating data that will be nee
 
 For the sake of simplicity this walkthrough runs all of the nodes on the local machine.  
 
-To initilize a Indy network, start run the `minifab init` command in your working directory. When the command finishes, for **each validator node**, should have to print in red the info like below 
+To initilize a Indy network, start run the `minindy init` command in your working directory. When the command finishes, for **each validator node**, should have to print in red the info like below 
 
 > [!IMPORTANT]  
 > Crucial information, save these.
@@ -101,10 +101,10 @@ Copy `pool_transactions_genesis` and `domain_transactions_genesis` to `~/mywork/
 
 You can use one of the two commands below to shut down the Fabric network.
 ```
-minifab stop
-minifab clean
+minindy stop
+minindy clean
 ```
-The first command simply removes all the containers which make up the Indy network, it will NOT remove any certificates or ledger data, you can run `minifab start` later to restart the whole thing including chaincode containers if there are any. The second command, in addition to removing all the containers, it cleans the working directory.
+The first command simply removes all the containers which make up the Indy network, it will NOT remove any certificates or ledger data, you can run `minindy start` later to restart the whole thing. The second command, in addition to removing all the containers, it cleans the working directory.
 
 ### The normal process of working with Hyperledger Indy
 
@@ -197,7 +197,7 @@ In order to get base58 of the verkey execute in your shell (you should have `ind
 MinIndy when installed onto your system is really just a short script. After you run at least one minindy command, a docker image named alanveloso/minindy:latest will be automatically pulled down from Docker Hub. Throughout the life cycle of MinIndy, your system should only have this script and the Docker image. To remove MinIndy, you only need to remove the script and the Docker image. If you would like to build the Docker image yourself, please follow the steps below, the process applies to Linux:
 
 ```
-git clone https://github.com/hyperledger-labs/minifabric.git
+git clone https://github.com/alanveloso/minindy.git
 cd minindy
-docker build -t alanveloso/minifab:latest .
+docker build -t alanveloso/minindy:latest .
 ```
