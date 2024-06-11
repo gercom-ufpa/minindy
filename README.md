@@ -1,8 +1,6 @@
-# MinIndy 
+# MinIndy: Automated Tool for Building Blockchain Networks Hyperledger Indy
 
-If you would like to learn Hyperledger Indy, or just want to get a feel of Hyperledger Indy, MinIndy is the tool to get you started. MinIndy can stand up a Indy network on a small machine
-like a VirtualBox VM but can also deploy Indy networks across multiple production
-grade servers. MinIndy has been tested on Linux.
+The Hyperledger Indy blockchain platform, targeted towards identity management networks, has garnered significance; however, setting up a comprehensive production network is intricate and demands expertise. In order to mitigate this complexity, the present study introduces MinIndy, a framework crafted to streamline the installation, configuration, and administration of Indy networks while maintaining optimal performance. Thus, MinIndy emerges as a feasible option for individuals and entities seeking to embrace Indy blockchain networks with reduced manual intervention.
 
 ## Prerequisites
 [docker](https://www.docker.com/) (18.03 or newer) environment
