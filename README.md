@@ -1,25 +1,25 @@
-# MinIndy: Automated Tool for Building Blockchain Networks Hyperledger Indy
+# MinIndy: Ferramenta Automatizada para Construção de Redes Blockchain Hyperledger Indy
 
-The Hyperledger Indy blockchain platform, targeted towards identity management networks, has garnered significance; however, setting up a comprehensive production network is intricate and demands expertise. In order to mitigate this complexity, the present study introduces MinIndy, a framework crafted to streamline the installation, configuration, and administration of Indy networks while maintaining optimal performance. Thus, MinIndy emerges as a feasible option for individuals and entities seeking to embrace Indy blockchain networks with reduced manual intervention.
+A plataforma Hyperledger Indy, focada em redes de gestão de identidade baseadas em blockchain, vem ganhando destaque, porém a implementação de uma rede completa em ambiente de produção é desafiadora e requer habilidades especializadas. Com o intuito de simplificar esse processo, este artigo apresenta o MinIndy, uma ferramenta desenvolvido para automatizar a instalação, configuração e administração de redes Indy. Portanto, o MinIndy surge como uma solução viável para indivíduos e organizações que desejam adotar redes blockchain Indy com menos intervenção manual e maior eficiência.
 
-## Prerequisites
+## Pré-requisitos
 
-* [Docker](https://www.docker.com/) version >= 18.03.
+* [Docker](https://www.docker.com/) versão >= 18.03.
 
-## Installing
+## Intalação
 
 > [!IMPORTANT]
-> You will need at least 4GB RAM and 5GB remaining Disk Storage available to run MinIndy on local machine.
+> Você precisará de pelo menos 4 GB de RAM e 5 GB de armazenamento em disco restantes disponíveis para executar o MinIndy na máquina local.
 
-In Linux (Ubuntu, Fedora, CentOS): 
+No Linux (Ubuntu, Fedora, CentOS): 
 ```
 mkdir -p ~/mywork && cd ~/mywork && curl -o minindy -sL https://raw.githubusercontent.com/alanveloso/minindy/main/minindy && chmod +x minindy
 ```
 
 > [!TIP]
-> To make minindy available system wide: `sudo mv minindy /usr/local/bin`
+> Para disponibilizar o minindy em todo o sistema: `sudo mv minindy /usr/local/bin`
 
-## Getting started
+## Começando
 
 Este tutorial instaciará uma rede Hyperledger Indy mínima para funcionamento em 3 Trustees, 4 Stewards e 4 Validators (1 para cada Stewards). 
 
