@@ -6,7 +6,7 @@ A plataforma Hyperledger Indy, focada em redes de gestão de identidade baseadas
 
 * [Docker](https://www.docker.com/) versão >= 18.03.
 
-## Intalação
+## Instalação
 
 > [!IMPORTANT]
 > Você precisará de pelo menos 4 GB de RAM e 5 GB de armazenamento em disco restantes disponíveis para executar o MinIndy na máquina local.
