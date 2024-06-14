@@ -13,7 +13,7 @@ A plataforma Hyperledger Indy, focada em redes de gestão de identidade baseadas
 
 No Linux (Ubuntu, Fedora, CentOS): 
 ```
-mkdir -p ~/mywork && cd ~/mywork && curl -o minindy -sL https://raw.githubusercontent.com/alanveloso/minindy/main/minindy && chmod +x minindy
+mkdir -p ~/mywork && cd ~/mywork && curl -o minindy -sL https://raw.githubusercontent.com/gercom-ufpa/minindy/main/minindy && chmod +x minindy
 ```
 
 > [!TIP]
