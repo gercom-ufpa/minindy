@@ -85,7 +85,7 @@ A rede já está em funcionamento e pode ser conferida utilizando o comando `doc
 cd ~
 git clone https://github.com/hyperledger/indy-node-container.git && cd indy-node-container/test/ && mkdir -p lib_indy/sandbox
 cp ~/mywork/vars/*_genesis lib_indy/sandbox/
-INDY_NETWORK_NAME=sandbox docker-compose up webserver
+INDY_NETWORK_NAME=sandbox docker compose up webserver
 ```
 
 A interface web estará diponível em [http://localhost:9000/](http://localhost:9000/). A interface web será similar a abaixo.
