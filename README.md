@@ -17,3 +17,7 @@ mkdir -p ~/mywork && cd ~/mywork && curl -o minindy -sL https://raw.githubuserco
 ##### Make minindy available system wide
 
 Move the minindy script to a directory which is part of your execution PATH in your system or add the directory containing it to your PATH. This is to make the later operations a bit easier, you will be able to run the minindy command anywhere in your system without specifying the path to the minindy script.
+
+## Documents
+
+To know more about MinIndy, see in [docs](./docs/README.md)
